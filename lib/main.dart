@@ -6,6 +6,7 @@ import 'data/datasources/gemini_remote_data_source.dart';
 import 'data/repositories/chat_repository_impl.dart';
 import 'domain/repositories/chat_repository.dart';
 import 'presentation/bloc/chat_bloc.dart';
+import 'presentation/bloc/chat_event.dart';
 import 'presentation/pages/home_page.dart';
 import 'services/settings_service.dart';
 import 'services/speech_service.dart';
