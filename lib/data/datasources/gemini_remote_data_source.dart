@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
@@ -50,8 +52,14 @@ class GeminiRemoteDataSource {
     ];
 
     try {
-      final GenerateContentResponse response =
-          await model.generateContent(contents);
+      final GenerateContentResponse response = await model
+          .generateContent(contents)
+          .timeout(
+            const Duration(seconds: 15),
+            onTimeout: () => throw TimeoutException(
+              'Gemini did not respond within 15 seconds.',
+            ),
+          );
       final String? reply = response.text;
       if (reply == null || reply.trim().isEmpty) {
         throw const ChatDataSourceException(
@@ -59,6 +67,11 @@ class GeminiRemoteDataSource {
         );
       }
       return reply.trim();
+    } on TimeoutException {
+      throw const ChatDataSourceException(
+        'Saru Bot took too long to respond (15s timeout). Please check '
+        'your internet connection and try again.',
+      );
     } on GenerativeAIException catch (e) {
       throw ChatDataSourceException(_explain(e));
     } catch (e) {

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/entities/chat_message.dart';
@@ -195,10 +196,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     final String reply;
     try {
+      // Outer safety-net timeout: even if a lower layer hangs forever
+      // (socket without EOF, DNS stall), we NEVER stay in "Thinking...".
       reply = await _chatRepository.sendMessage(
         apiKey: _settingsService.getApiKey(),
         history: history,
         message: text,
+      ).timeout(
+        const Duration(seconds: 20),
+        onTimeout: () => throw const ChatRepositoryException(
+          'Saru Bot is taking too long to think. Please check your internet '
+          'connection and try again.',
+        ),
       );
     } catch (e) {
       if (!isClosed) {
@@ -222,14 +231,23 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ),
     );
 
-    // Spoken playback; the TTS completion handler flips us back to idle.
+    // Spoken playback. The TTS engine is wrapped in its own try-catch and a
+    // hard watchdog timeout — a missing Bengali voice or a hung engine can
+    // delay/lose audio, but must never freeze the app.
     try {
-      await _ttsService.speak(reply);
-    } catch (_) {/* completion handler already covers failure */}
+      await _ttsService.speak(reply).timeout(
+            const Duration(seconds: 45),
+            onTimeout: () {
+              debugPrint('[SaruBot] TTS timed out after 45s — resetting orb.');
+            },
+          );
+    } catch (e) {
+      debugPrint('[SaruBot] TTS failed safely, showing text only: $e');
+    }
 
-    // Safety net for engines whose handlers never fire (rare emulators):
-    // never leave the orb stuck in the Speaking state.
-    if (!isClosed && state.status == ChatStatus.speaking) {
+    // GUARANTEED state reset: under no circumstances may the app remain in
+    // Speaking/Processing after the reply has been delivered.
+    if (!isClosed && state.status != ChatStatus.idle) {
       emit(state.copyWith(status: ChatStatus.idle));
     }
   }
