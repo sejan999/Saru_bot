@@ -1,4 +1,6 @@
 import 'package:permission_handler/permission_handler.dart';
+import 'package:speech_to_text/speech_recognition_error.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 import '../core/app_constants.dart';
@@ -31,7 +33,7 @@ class SpeechService {
 
     try {
       _initialized = await _speech.initialize(
-        onError: (stt.SpeechRecognitionError error) =>
+        onError: (SpeechRecognitionError error) =>
             onListeningChanged?.call(false),
       );
     } catch (_) {
@@ -47,7 +49,7 @@ class SpeechService {
     if (!ok) return false;
 
     await _speech.listen(
-      onResult: (stt.SpeechRecognitionResult result) {
+      onResult: (SpeechRecognitionResult result) {
         final String text = result.recognizedWords.trim();
         if (result.finalResult && text.isNotEmpty) {
           onFinalResult?.call(text);

@@ -38,7 +38,7 @@ class SaruBotApp extends StatelessWidget {
           settingsService: settingsService,
           speechService: SpeechService(),
           ttsService: TtsService(),
-        )..add(const ChatInitialized()),
+        )..add(ChatInitialized()),
         child: MaterialApp(
           title: 'Saru Bot',
           debugShowCheckedModeBanner: false,
