@@ -1,6 +1,6 @@
 # Saru Bot 🎙️✨
 
-A futuristic, zero-friction AI voice assistant built with Flutter and powered by Google Gemini (`gemini-3.1-flash-live`).
+A futuristic, zero-friction AI voice assistant built with Flutter and powered by Google Gemini (`gemini-1.5-flash`).
 
 ## Features
 - 🎤 Tap the glowing orb to talk — live speech-to-text via `speech_to_text`

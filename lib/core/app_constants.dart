@@ -6,8 +6,8 @@ class AppConstants {
   /// is persisted locally on-device.
   static const String apiKeyStorageKey = 'gemini_api_key';
 
-  /// Strictly pinned Gemini model used by Saru Bot.
-  static const String geminiModelName = 'gemini-3.1-flash-live';
+  /// Gemini model used by Saru Bot.
+  static const String geminiModelName = 'gemini-1.5-flash';
 
   /// System instruction injected into every Gemini request.
   static const String systemInstruction =
