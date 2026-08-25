@@ -1,0 +1,38 @@
+name: saru_bot
+description: "Saru Bot — a futuristic AI voice assistant powered by Google Gemini."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # State Management
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+
+  # Voice Interaction
+  speech_to_text: ^7.0.0
+  flutter_tts: ^4.2.0
+
+  # AI Brain (Google Gemini)
+  google_generative_ai: ^0.4.6
+
+  # Storage
+  shared_preferences: ^2.3.2
+
+  # Runtime microphone permission handling (RECORD_AUDIO)
+  permission_handler: ^11.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

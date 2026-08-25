@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Saru Bot orb glyph: glowing cyan ring + core dot on transparent canvas.
+     Canvas is 108dp per adaptive-icon spec; safe zone is the inner 66dp. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Outer glow ring -->
+    <path
+        android:pathData="M54,24 a30,30 0 1,0 0.01,0 z M54,31 a23,23 0 1,1 -0.01,0 z"
+        android:fillType="evenOdd"
+        android:fillColor="#FF22D3EE"/>
+
+    <!-- Inner core dot -->
+    <path
+        android:pathData="M54,42 a12,12 0 1,0 0.01,0 z"
+        android:fillColor="#FF67E8F9"/>
+
+</vector>
